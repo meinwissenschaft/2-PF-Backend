@@ -13,11 +13,12 @@ import java.io.IOException;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
-    private final JwtUtil jwrUtil;
+
+    private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
 
     public JwtFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService) {
-        this.jwrUtil = jwtUtil;
+        this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
     }
 
@@ -26,27 +27,41 @@ public class JwtFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+
         final String authHeader = request.getHeader("Authorization");
 
         String token = null;
         String username = null;
 
-        //leer token:
-        if(authHeader != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        // 🔥 1. Extraer token
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7); // quitar "Bearer "
+            username = jwtUtil.extractUsername(token); // 🔥 clave
+        }
+
+        // 🔥 2. Validar token
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
             var userDetails = userDetailsService.loadUserByUsername(username);
 
-            if (jwtUtil.isTokenValid(token, userDetails.getUsername())){
+            if (jwtUtil.isTokenValid(token, userDetails.getUsername())) {
+
                 var authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
                         userDetails.getAuthorities()
                 );
+
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
+
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                System.out.println("USERNAME DEL TOKEN: " + username); // debug
             }
         }
+
         filterChain.doFilter(request, response);
     }
 }
