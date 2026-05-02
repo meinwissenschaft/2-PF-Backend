@@ -2,7 +2,7 @@ package com.stockSystem.login.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.stockSystem.login.entity.User;
+import com.stockSystem.login.entity.Usuario;
 import com.stockSystem.login.repository.UserRepository;
 import com.stockSystem.login.service.UserService;
 
@@ -17,12 +17,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findByUsername(String username) {
+    public Usuario findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
     @Override
-    public User save(User user) {
-        return userRepository.save(user);
+    public Usuario save(Usuario usuario) {
+        return userRepository.save(usuario);
     }
 }

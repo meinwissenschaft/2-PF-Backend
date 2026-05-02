@@ -1,10 +1,10 @@
 package com.stockSystem.login.service;
 
-import com.stockSystem.login.entity.User;
+import com.stockSystem.login.entity.Usuario;
 
 public interface UserService {
 
-    User findByUsername(String username);
+    Usuario findByUsername(String username);
 
-    User save(User user);
+    Usuario save(Usuario usuario);
 }

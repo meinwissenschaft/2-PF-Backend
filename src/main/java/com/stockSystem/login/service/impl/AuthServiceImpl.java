@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.stockSystem.login.dto.LoginRequest;
 import com.stockSystem.login.dto.RegisterRequest;
 import com.stockSystem.login.entity.Role;
-import com.stockSystem.login.entity.User;
+import com.stockSystem.login.entity.Usuario;
 import com.stockSystem.login.repository.UserRepository;
 import com.stockSystem.login.security.jwt.JwtUtil;
 import com.stockSystem.login.service.AuthService;
@@ -50,13 +50,13 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("El email ya está registrado");
         }
 
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
+        Usuario usuario = new Usuario();
+        usuario.setUsername(request.getUsername());
+        usuario.setEmail(request.getEmail());
 
         //encriptación:
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.USER);
-        userRepository.save(user);
+        usuario.setPassword(passwordEncoder.encode(request.getPassword()));
+        usuario.setRole(Role.USER);
+        userRepository.save(usuario);
     }
 }
