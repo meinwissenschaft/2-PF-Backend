@@ -26,19 +26,19 @@ public class IngresoService {
 
    public Ingreso crearIngreso(MovimientoRequestDTO dto) {
 
-       Producto producto = productoRepository.findById(dto.productoId)
+       Producto producto = productoRepository.findById(dto.getProductoId())
                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
        Stock stock = producto.getStock();
 
        //Logica de negocio:
-       stock.setCantidad(stock.getCantidad() + dto.cantidad);
+       stock.setCantidad(stock.getCantidad() + dto.getCantidad());
 
        stockRepository.save(stock);
 
        Ingreso ingreso = new Ingreso();
        ingreso.setProducto(producto);
-       ingreso.setCantidad(dto.cantidad);
+       ingreso.setCantidad(dto.getCantidad());
        ingreso.setFechaIngreso(LocalDate.now());
 
        return ingresoRepository.save(ingreso);
