@@ -1,6 +1,5 @@
 package com.stockSystem.login.service;
 
-
 import com.stockSystem.login.dto.MovimientoRequestDTO;
 import com.stockSystem.login.entity.Ingreso;
 import com.stockSystem.login.entity.Producto;
@@ -8,39 +7,41 @@ import com.stockSystem.login.entity.Stock;
 import com.stockSystem.login.repository.IngresoRepository;
 import com.stockSystem.login.repository.ProductoRepository;
 import com.stockSystem.login.repository.StockRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
+
 public class IngresoService {
-   @Autowired
-    private IngresoRepository ingresoRepository;
 
-   @Autowired
-    private ProductoRepository productoRepository;
+    private final IngresoRepository ingresoRepository;
+    private final ProductoRepository productoRepository;
+    private final StockRepository stockRepository;
 
-   @Autowired
-    private StockRepository stockRepository;
+    public Ingreso crearIngreso(MovimientoRequestDTO dto) {
 
-   public Ingreso crearIngreso(MovimientoRequestDTO dto) {
+        Producto producto = productoRepository.findById(dto.getProductoId())
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-       Producto producto = productoRepository.findById(dto.getProductoId())
-               .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        Stock stock = producto.getStock();
 
-       Stock stock = producto.getStock();
+        stock.setCantidad(stock.getCantidad() + dto.getCantidad());
 
-       //Logica de negocio:
-       stock.setCantidad(stock.getCantidad() + dto.getCantidad());
+        stockRepository.save(stock);
 
-       stockRepository.save(stock);
+        Ingreso ingreso = new Ingreso();
 
-       Ingreso ingreso = new Ingreso();
-       ingreso.setProducto(producto);
-       ingreso.setCantidad(dto.getCantidad());
-       ingreso.setFechaIngreso(LocalDate.now());
+        ingreso.setProducto(producto);
+        ingreso.setCantidad(dto.getCantidad());
+        ingreso.setFechaIngreso(LocalDate.now());
 
-       return ingresoRepository.save(ingreso);
-   }
+        return ingresoRepository.save(ingreso);
+    }
 }

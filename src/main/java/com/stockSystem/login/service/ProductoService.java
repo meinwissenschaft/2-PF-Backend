@@ -2,8 +2,8 @@ package com.stockSystem.login.service;
 
 import com.stockSystem.login.dto.ProductoRequestDTO;
 import com.stockSystem.login.dto.ProductoResponseDTO;
-import com.stockSystem.login.dto.ProductoMapper;
 import com.stockSystem.login.entity.*;
+import com.stockSystem.login.mapper.ProductoMapper;
 import com.stockSystem.login.repository.*;
 
 import lombok.RequiredArgsConstructor;

@@ -4,7 +4,5 @@ import com.stockSystem.login.entity.Usuario;
 
 public interface UserService {
 
-    Usuario findByUsername(String username);
-
-    Usuario save(Usuario usuario);
+    Usuario findByEmail(String email);
 }

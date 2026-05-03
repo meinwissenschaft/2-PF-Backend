@@ -1,7 +1,8 @@
-package com.stockSystem.login.dto;
+package com.stockSystem.login.mapper;
 
 import com.stockSystem.login.dto.ProductoResponseDTO;
 import com.stockSystem.login.entity.Producto;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
