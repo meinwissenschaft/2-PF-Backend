@@ -1,7 +1,9 @@
 package com.stockSystem.login.controller;
 
 import com.stockSystem.login.dto.MovimientoRequestDTO;
+import com.stockSystem.login.entity.Egreso;
 import com.stockSystem.login.service.EgresoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +19,12 @@ public class EgresoController {
     private EgresoService egresoService;
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody MovimientoRequestDTO dto) {
-        return ResponseEntity.ok(egresoService.crearEgreso(dto));
+    public ResponseEntity<Egreso> crearEgreso(
+            @Valid @RequestBody MovimientoRequestDTO dto
+    ) {
+
+        return ResponseEntity.ok(
+                egresoService.crearEgreso(dto)
+        );
     }
 }
