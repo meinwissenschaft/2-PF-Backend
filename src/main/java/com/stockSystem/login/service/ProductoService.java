@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 
@@ -40,4 +42,13 @@ public class ProductoService {
 
         return productoMapper.toDTO(productoGuardado);
     }
+
+    public List<ProductoResponseDTO> obtenerProductos() {
+
+        return productoRepository.findAll()
+                .stream()
+                .map(productoMapper::toDTO)
+                .toList();
+    }
+
 }
