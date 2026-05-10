@@ -4,9 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -43,21 +45,40 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
+
         http
-                //desactiva el CSRF (API Rest)
+
+                // 🔥 HABILITAR CORS
+                .cors(Customizer.withDefaults())
+
+                // 🔥 DESACTIVAR CSRF
                 .csrf(csrf -> csrf.disable())
-                //manejo de errores (EntryPoint)
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(jwtAutheticationEntryPoint)
+
+                // 🔥 JWT STATELESS
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
                 )
-                //rutas publicas:
+
+                // 🔥 AUTH
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated()
+
+                        .requestMatchers("/auth/**")
+                        .permitAll()
+
+                        .anyRequest()
+                        .authenticated()
                 )
-                //Filtro JWT (antes del login de spring)
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+                // 🔥 JWT FILTER
+                .addFilterBefore(
+                        jwtFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
+
         return http.build();
     }
 
@@ -65,9 +86,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
-        CorsConfiguration configuration = new CorsConfiguration();
+        CorsConfiguration configuration =
+                new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(
+                List.of("http://localhost:5173")
+        );
 
         configuration.setAllowedMethods(
                 List.of("GET", "POST", "PUT", "DELETE")
