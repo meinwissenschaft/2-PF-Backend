@@ -40,4 +40,35 @@ public class ProductoController {
                 productoService.obtenerProductos()
         );
     }
+
+    @PutMapping("/{id}")
+
+    @PreAuthorize("hasRole('ADMIN')")
+
+    public ResponseEntity<ProductoResponseDTO>
+    actualizarProducto(
+
+            @PathVariable Long id,
+
+            @Valid
+            @RequestBody ProductoRequestDTO dto
+    ) {
+
+        return ResponseEntity.ok(
+                productoService.actualizarProducto(id, dto)
+        );
+    }
+
+    @DeleteMapping("/{id}")
+
+    @PreAuthorize("hasRole('ADMIN')")
+
+    public ResponseEntity<Void> eliminarProducto(
+            @PathVariable Long id
+    ) {
+
+        productoService.eliminarProducto(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

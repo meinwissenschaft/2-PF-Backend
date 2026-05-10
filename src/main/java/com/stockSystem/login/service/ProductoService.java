@@ -6,6 +6,7 @@ import com.stockSystem.login.entity.*;
 import com.stockSystem.login.mapper.ProductoMapper;
 import com.stockSystem.login.repository.*;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -51,4 +52,60 @@ public class ProductoService {
                 .toList();
     }
 
+    @Transactional
+    public ProductoResponseDTO actualizarProducto(
+            Long id,
+            ProductoRequestDTO dto
+    ) {
+
+        Producto producto = productoRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Producto no encontrado"
+                        )
+                );
+
+        // categoria
+        Categoria categoria = categoriaRepository
+                .findById(dto.getCategoriaId())
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Categoría no encontrada"
+                        )
+                );
+
+        // actualizar
+        producto.setNombre(dto.getNombre());
+
+        producto.setDescripcion(dto.getDescripcion());
+
+        producto.setCategoria(categoria);
+
+        // stock
+        producto.getStock()
+                .setCantidad(dto.getCantidadInicial());
+
+        productoRepository.save(producto);
+
+        return productoMapper.toDTO(producto);
+    }
+
+    @Transactional
+    public void eliminarProducto(Long id) {
+
+        Producto producto = productoRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Producto no encontrado"
+                        )
+                );
+
+        // eliminar stock primero
+        stockRepository.delete(producto.getStock());
+
+        // eliminar producto
+        productoRepository.delete(producto);
+    }
 }
