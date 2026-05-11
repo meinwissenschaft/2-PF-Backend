@@ -46,7 +46,7 @@ public class ProductoService {
 
     public List<ProductoResponseDTO> obtenerProductos() {
 
-        return productoRepository.findAll()
+        return productoRepository.findAllByOrderByCodProdAsc()
                 .stream()
                 .map(productoMapper::toDTO)
                 .toList();
