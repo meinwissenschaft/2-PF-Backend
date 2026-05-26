@@ -8,8 +8,8 @@ import com.stockSystem.login.entity.Usuario;
 import com.stockSystem.login.repository.IngresoRepository;
 import com.stockSystem.login.repository.ProductoRepository;
 import com.stockSystem.login.repository.StockRepository;
-
 import com.stockSystem.login.repository.UsuarioRepository;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -27,27 +27,6 @@ public class IngresoService {
     private final ProductoRepository productoRepository;
     private final StockRepository stockRepository;
     private final UsuarioRepository usuarioRepository;
-
-    public Ingreso crearIngreso(MovimientoRequestDTO dto) {
-
-        Producto producto = productoRepository.findById(dto.getProductoId())
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-
-        Stock stock = producto.getStock();
-
-        stock.setCantidad(stock.getCantidad() + dto.getCantidad());
-
-        stockRepository.save(stock);
-
-        Ingreso ingreso = new Ingreso();
-
-        ingreso.setProducto(producto);
-        ingreso.setCantidad(dto.getCantidad());
-        ingreso.setFechaIngreso(LocalDate.now());
-
-        return ingresoRepository.save(ingreso);
-    }
-    @Transactional
 
     public void registrarIngreso(
             MovimientoRequestDTO dto,
@@ -70,7 +49,6 @@ public class IngresoService {
                         )
                 );
 
-        // actualizar stock
         Stock stock = producto.getStock();
 
         stock.setCantidad(
@@ -80,15 +58,11 @@ public class IngresoService {
 
         stockRepository.save(stock);
 
-        // movimiento
         Ingreso ingreso = new Ingreso();
 
         ingreso.setProducto(producto);
-
         ingreso.setCantidad(dto.getCantidad());
-
         ingreso.setFechaIngreso(LocalDate.now());
-
         ingreso.setUsuario(usuario);
 
         ingresoRepository.save(ingreso);

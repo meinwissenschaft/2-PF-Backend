@@ -1,30 +1,44 @@
 package com.stockSystem.login.controller;
 
 import com.stockSystem.login.dto.MovimientoRequestDTO;
-import com.stockSystem.login.entity.Egreso;
 import com.stockSystem.login.service.EgresoService;
+
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.security.core.Authentication;
+
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/egresos")
+@RequiredArgsConstructor
+
 public class EgresoController {
 
-    @Autowired
-    private EgresoService egresoService;
+    private final EgresoService egresoService;
 
     @PostMapping
-    public ResponseEntity<Egreso> crearEgreso(
-            @Valid @RequestBody MovimientoRequestDTO dto
+    public ResponseEntity<String> registrarEgreso(
+
+            @Valid
+            @RequestBody MovimientoRequestDTO dto,
+
+            Authentication authentication
     ) {
 
+        egresoService.registrarEgreso(
+
+                dto,
+
+                authentication.getName()
+        );
+
         return ResponseEntity.ok(
-                egresoService.crearEgreso(dto)
+                "Egreso registrado"
         );
     }
 }

@@ -1,33 +1,44 @@
 package com.stockSystem.login.controller;
 
 import com.stockSystem.login.dto.MovimientoRequestDTO;
-import com.stockSystem.login.entity.Ingreso;
 import com.stockSystem.login.service.IngresoService;
 
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.security.core.Authentication;
+
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/ingresos")
-    public class IngresoController {
+@RequiredArgsConstructor
 
-        @Autowired
-        private IngresoService ingresoService;
+public class IngresoController {
 
-        @PostMapping
-        public ResponseEntity<Ingreso> crearIngreso(
-            @Valid @RequestBody MovimientoRequestDTO dto
-        ) {
+    private final IngresoService ingresoService;
 
-            return ResponseEntity.ok(
-                ingresoService.crearIngreso(dto)
-            );
-        }
+    @PostMapping
+    public ResponseEntity<String> registrarIngreso(
+
+            @Valid
+            @RequestBody MovimientoRequestDTO dto,
+
+            Authentication authentication
+    ) {
+
+        ingresoService.registrarIngreso(
+
+                dto,
+
+                authentication.getName()
+        );
+
+        return ResponseEntity.ok(
+                "Ingreso registrado"
+        );
     }
-
+}
