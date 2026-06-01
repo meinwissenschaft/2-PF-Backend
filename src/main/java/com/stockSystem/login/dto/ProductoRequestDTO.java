@@ -18,11 +18,6 @@ public class ProductoRequestDTO {
     @NotBlank(message = "La descripción es obligatoria")
     private String descripcion;
 
-    @NotNull(message = "La cantidad inicial es obligatoria")
-
-    @Min(value = 0, message = "La cantidad no puede ser negativa")
-    private Integer cantidadInicial;
-
     @NotNull(message = "La categoría es obligatoria")
     private Long categoriaId;
 }

@@ -29,7 +29,7 @@ public class ProductoService {
                 .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
 
         Stock stock = new Stock();
-        stock.setCantidad(dto.getCantidadInicial());
+        stock.setCantidad(0);
 
         stockRepository.save(stock);
 
@@ -81,10 +81,6 @@ public class ProductoService {
         producto.setDescripcion(dto.getDescripcion());
 
         producto.setCategoria(categoria);
-
-        // stock
-        producto.getStock()
-                .setCantidad(dto.getCantidadInicial());
 
         productoRepository.save(producto);
 
