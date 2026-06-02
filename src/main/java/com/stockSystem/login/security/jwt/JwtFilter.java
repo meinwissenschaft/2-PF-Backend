@@ -33,13 +33,13 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
         String username = null;
 
-        // 🔥 1. Extraer token
+        //Extraer token
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7); // quitar "Bearer "
-            username = jwtUtil.extractUsername(token); // 🔥 clave
+            username = jwtUtil.extractUsername(token); // clave
         }
 
-        // 🔥 2. Validar token
+        //Validar token
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             var userDetails = userDetailsService.loadUserByUsername(username);

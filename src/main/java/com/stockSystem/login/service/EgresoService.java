@@ -35,17 +35,26 @@ public class EgresoService {
 
         Stock stock = producto.getStock();
 
-        // 🔥 Validación crítica
+        //Validación crítica
         if (stock.getCantidad() < dto.getCantidad()) {
             throw new RuntimeException("Stock insuficiente");
         }
 
-        // 🔥 Descontar stock
+        //Validacion de stock insufiente:
+        if (stock.getCantidad() < dto.getCantidad()) {
+
+            throw new RuntimeException(
+                    "Stock insuficiente. Disponible: "
+                            + stock.getCantidad()
+            );
+        }
+
+        //Descontar stock
         stock.setCantidad(stock.getCantidad() - dto.getCantidad());
 
         stockRepository.save(stock);
 
-        // 🔥 Registrar movimiento
+        //Registrar movimiento
         Egreso egreso = new Egreso();
 
         egreso.setProducto(producto);

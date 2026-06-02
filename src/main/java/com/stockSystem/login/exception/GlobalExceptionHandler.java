@@ -15,9 +15,7 @@ import java.time.LocalDateTime;
 
 public class GlobalExceptionHandler {
 
-    // =========================
-    // NOT FOUND
-    // =========================
+    // Manejo de excepciones: "No se encuentra"
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(
             ResourceNotFoundException ex
@@ -32,9 +30,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
-    // =========================
-    // BAD REQUEST
-    // =========================
+    // Manejo de excepciones: "Petición equivocada"
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handleBadRequest(
             BadRequestException ex
@@ -49,9 +45,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    // =========================
-    // UNAUTHORIZED
-    // =========================
+    // Manejo de excepciones: "No autorizado"
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ErrorResponse> handleUnauthorized(
             UnauthorizedException ex
@@ -66,9 +60,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
-    // =========================
-    // GENERIC
-    // =========================
+    // Manejo de excepciones: "Generico"
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(
             Exception ex
@@ -84,9 +76,7 @@ public class GlobalExceptionHandler {
                 .body(error);
     }
 
-    // =========================
-    // Argumentos no validos
-    // =========================
+    // Argumentos no validos:
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationErrors(
             MethodArgumentNotValidException ex

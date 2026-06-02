@@ -21,9 +21,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    // =========================
-    // REGISTER
-    // =========================
+    // Register:
     @PostMapping("/register")
     public ResponseEntity<?> register(
             @Valid @RequestBody RegisterRequest request
@@ -39,9 +37,7 @@ public class AuthController {
         );
     }
 
-    // =========================
-    // LOGIN
-    // =========================
+    // Login:
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @Valid @RequestBody LoginRequest request

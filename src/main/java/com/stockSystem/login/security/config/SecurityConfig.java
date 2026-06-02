@@ -50,20 +50,20 @@ public class SecurityConfig {
 
         http
 
-                // 🔥 HABILITAR CORS
+                //Habilitar Cors
                 .cors(Customizer.withDefaults())
 
-                // 🔥 DESACTIVAR CSRF
+                //Desabilitar CSRF
                 .csrf(csrf -> csrf.disable())
 
-                // 🔥 JWT STATELESS
+                //JWT sin estado:
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS
                         )
                 )
 
-                // 🔥 AUTH
+                //Autorización:
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/auth/**")
@@ -73,7 +73,7 @@ public class SecurityConfig {
                         .authenticated()
                 )
 
-                // 🔥 JWT FILTER
+                //JWT Filter:
                 .addFilterBefore(
                         jwtFilter,
                         UsernamePasswordAuthenticationFilter.class

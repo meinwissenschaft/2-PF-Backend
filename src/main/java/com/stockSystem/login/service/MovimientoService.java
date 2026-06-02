@@ -82,7 +82,7 @@ public class MovimientoService {
             );
         }
 
-        // ordenar fecha DESC
+        // ordenar fecha descendente:
         movimientos.sort(
 
                 Comparator.comparing(

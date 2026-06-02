@@ -29,9 +29,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    // =========================
-    // LOGIN
-    // =========================
+    // Login
     @Override
     public String login(LoginRequest request) {
 
@@ -45,9 +43,7 @@ public class AuthServiceImpl implements AuthService {
         return jwtUtil.generateToken(request.getEmail());
     }
 
-    // =========================
-    // REGISTER
-    // =========================
+    // Register
     @Override
     public void register(RegisterRequest request) {
 

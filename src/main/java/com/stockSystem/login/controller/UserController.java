@@ -22,7 +22,7 @@ public class UserController {
     @GetMapping("/me")
     public UserResponse getProfile(Authentication authentication) {
 
-        // 🔥 Spring Security ahora usa email como principal
+        // Spring Security usa email para autentificación:
         String email = authentication.getName();
 
         Usuario usuario = userService.findByEmail(email);
