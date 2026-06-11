@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: postgres_db
+    ports:
+      - "27017:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: "1234"
+      POSTGRES_DB: tfi
+    networks:
+      - tfi
+
+volumes:
+  postgres_data:
+
+networks:
+  tfi:
+    driver: bridge
